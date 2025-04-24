@@ -6,7 +6,7 @@ class User {
   }
 
   // 🟢 Skapa en användare (POST)
-  save() {
+  async save() {
     if (this.id !== null) {
       console.warn("Användaren är redan sparad.");
       return Promise.resolve(); // Vi gör inget om id redan finns
@@ -25,6 +25,27 @@ class User {
       .catch((error) => console.error("Error saving user:", error));
   }
 
+  //   // 🟢 Skapa en användare (POST)
+  //   async save() {
+  //     if (this.id !== null) {
+  //       console.warn("Användaren är redan sparad.");
+  //       return; // Gör inget om id redan finns
+  //     }
+
+  //     try {
+  //       const response = await fetch("http://localhost:3000/users", {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({ name: this.name, email: this.email }),
+  //       });
+  //       const data = await response.json();
+  //       console.log("User saved:", data);
+  //       this.id = data.id; // Uppdatera objektet med id från servern
+  //     } catch (error) {
+  //       console.error("Error saving user:", error);
+  //     }
+  //   }
+
   // 🟡 Hämta alla användare (GET)
   static getAllUsers() {
     return fetch("http://localhost:3000/users")
@@ -35,6 +56,18 @@ class User {
       })
       .catch((error) => console.error("Error fetching users:", error));
   }
+
+  //   // 🟡 Hämta alla användare (GET)
+  //   static async getAllUsers() {
+  //     try {
+  //       const response = await fetch("http://localhost:3000/users");
+  //       const data = await response.json();
+  //       console.log("Users:", data);
+  //       return data.map((u) => new User(u.name, u.email, u.id)); // Konvertera till User-objekt
+  //     } catch (error) {
+  //       console.error("Error fetching users:", error);
+  //     }
+  //   }
 
   // 🟠 Uppdatera en användare (PUT)
   static updateUser(id, updatedData) {
@@ -48,6 +81,21 @@ class User {
       .catch((error) => console.error("Error updating user:", error));
   }
 
+  //   // 🟠 Uppdatera en användare (PUT)
+  //   static async updateUser(id, updatedData) {
+  //     try {
+  //       const response = await fetch(`http://localhost:3000/users/${id}`, {
+  //         method: "PUT",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify(updatedData),
+  //       });
+  //       const data = await response.json();
+  //       console.log("User updated:", data);
+  //     } catch (error) {
+  //       console.error("Error updating user:", error);
+  //     }
+  //   }
+
   // 🔴 Ta bort en användare (DELETE)
   static deleteUser(id) {
     return fetch(`http://localhost:3000/users/${id}`, {
@@ -57,115 +105,22 @@ class User {
       .catch((error) => console.error("Error deleting user:", error));
   }
 
+  //   // 🔴 Ta bort en användare (DELETE)
+  //   static async deleteUser(id) {
+  //     try {
+  //       await fetch(`http://localhost:3000/users/${id}`, { method: "DELETE" });
+  //       console.log(`User ${id} deleted`);
+  //     } catch (error) {
+  //       console.error("Error deleting user:", error);
+  //     }
+  //   }
+
   displayInfo() {
     return `Namn: ${this.name}, E-post: ${this.email}`;
   }
 }
 
-// 🔁 Hjälpfunktion: Lägg till användare i HTML-listan
-function addUserToList(user) {
-  const li = document.createElement("li");
-  li.textContent = user.displayInfo();
-
-  // ❌ Radera-knapp
-  const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "❌";
-  deleteBtn.style.marginLeft = "10px";
-  deleteBtn.onclick = () => {
-    if (confirm(`Ta bort ${user.name}?`)) {
-      User.deleteUser(user.id).then(() => li.remove());
-    }
-  };
-
-  // 🖊️ Redigera-knapp
-  const editBtn = document.createElement("button");
-  editBtn.textContent = "🖊️";
-  editBtn.style.marginLeft = "5px";
-  editBtn.onclick = () => {
-    const newName = prompt("Nytt namn:", user.name);
-    const newEmail = prompt("Ny e-post:", user.email);
-    if (newName && newEmail) {
-      User.updateUser(user.id, { name: newName, email: newEmail }).then(() => {
-        user.name = newName;
-        user.email = newEmail;
-        li.textContent = user.displayInfo(); // uppdatera texten
-        li.appendChild(editBtn); // lägg till knappar igen
-        li.appendChild(deleteBtn);
-      });
-    }
-  };
-
-  li.appendChild(editBtn);
-  li.appendChild(deleteBtn);
-  document.getElementById("userList").appendChild(li);
-}
-
-// 🧾 Formulär-hantering
-document.addEventListener("DOMContentLoaded", () => {
-  // ✅ Ladda alla användare och visa dem i listan
-  User.getAllUsers().then((users) => {
-    users.forEach((user) => addUserToList(user));
-  });
-
-  const form = document.getElementById("userForm");
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault(); // Förhindra att sidan laddas om
-
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-
-    if (!name || !email) return;
-
-    const newUser = new User(name, email);
-    newUser.save().then(() => {
-      addUserToList(newUser); // Lägg till nya användaren i listan
-      form.reset(); // Rensa formuläret
-    });
-  });
-
-  // Ladda formulärdata när sidan laddas
-  const savedData = JSON.parse(localStorage.getItem("formData"));
-  if (savedData) {
-    document.getElementById("name").value = savedData.name;
-    document.getElementById("email").value = savedData.email;
-  }
-
-  // ✅ Använd preferenser för mörkt läge när sidan laddas
-  if (getDarkMode()) {
-    document.body.classList.add("dark-mode");
-  }
-});
-
-// Spara formulärdata
-document.getElementById("userForm").addEventListener("input", function () {
-  const formData = {
-    name: document.getElementById("name").value,
-    email: document.getElementById("email").value,
-  };
-  localStorage.setItem("formData", JSON.stringify(formData));
-});
-
-// Mörkt läge funktioner
-function setDarkMode(isDark) {
-  localStorage.setItem("darkMode", JSON.stringify(isDark));
-}
-
-function getDarkMode() {
-  return JSON.parse(localStorage.getItem("darkMode")) || false; // Standardvärde är false om inget finns
-}
-
-// Funktion för att växla mörkt läge
-document.getElementById("darkModeToggle").addEventListener("click", () => {
-  const currentMode = getDarkMode();
-  const newMode = !currentMode;
-  setDarkMode(newMode);
-  if (newMode) {
-    document.body.classList.add("dark-mode");
-  } else {
-    document.body.classList.remove("dark-mode");
-  }
-});
+export default User;
 
 // let user1 = new User("Alice", "alice@example.com");
 // let user2 = new User("Bob", "bob@example.com");

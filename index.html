@@ -4,17 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Användarhantering</title>
-    <style>
-      body.dark-mode {
-        background-color: #121212;
-        color: white;
-      }
-
-      button.dark-mode {
-        background-color: #333;
-        color: white;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
@@ -23,12 +13,13 @@
       <input type="text" id="name" placeholder="Namn" required />
       <input type="email" id="email" placeholder="E-post" required />
       <button type="submit">Lägg till</button>
-      <button id="darkModeToggle">Växla Dark Mode</button>
+      <button type="button" id="clear">Rensa</button>
     </form>
+    <button id="darkModeToggle">Växla Dark Mode</button>
 
     <h2>Befintliga användare</h2>
     <ul id="userList"></ul>
 
-    <script src="user.js"></script>
+    <script type="module" src="main.js"></script>
   </body>
 </html>

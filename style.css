@@ -1,0 +1,136 @@
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #eef4ed; /* Ljus bakgrundsfärg */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #0b2545; /* Primär textfärg */
+  transition: background-color 0.3s, color 0.3s; /* Smidig övergång för mörkt läge */
+}
+body.dark-mode {
+  background-color: #121212;
+  color: white;
+}
+
+button.dark-mode {
+  background-color: #333;
+  color: white;
+}
+
+h2 {
+  font-size: 24px;
+  color: #134074; /* Mörkblå färg för rubriker */
+  margin-bottom: 20px;
+}
+
+/* Formulär och inputs */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  margin-bottom: 20px;
+  margin-top: 10%;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #8da9c4;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #134074;
+  outline: none;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px 0;
+  background-color: #134074;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #8da9c4;
+}
+
+#clear {
+  background-color: #8da9c4;
+}
+
+#clear:hover {
+  background-color: #134074;
+}
+
+/* Listan med användare */
+#userList {
+  list-style: none;
+  padding: 0;
+  width: 300px;
+}
+
+#userList li {
+  background-color: #ffffff;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 20vw;
+}
+
+/* Mörkt läge */
+body.dark-mode {
+  background-color: #121212;
+  color: #eef4ed; /* Ljus textfärg i mörkt läge */
+}
+
+body.dark-mode h2 {
+  color: #eef4ed; /* Rubrikfärg i mörkt läge */
+}
+
+body.dark-mode form {
+  background-color: #1a1a1a;
+}
+
+body.dark-mode button {
+  background-color: #333;
+}
+
+body.dark-mode button:hover {
+  background-color: #8da9c4;
+}
+
+body.dark-mode #clear {
+  background-color: #8da9c4;
+}
+
+body.dark-mode #clear:hover {
+  background-color: #134074;
+}
+
+/* Mörk mode-stil för listan när mörkt läge är aktiverat */
+body.dark-mode #userList li {
+  background-color: #333; /* Mörk bakgrund för listan */
+  color: white; /* Vit text för att kontrastera mot den mörka bakgrunden */
+}
