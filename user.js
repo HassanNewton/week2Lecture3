@@ -123,6 +123,48 @@ document.addEventListener("DOMContentLoaded", () => {
       form.reset(); // Rensa formuläret
     });
   });
+
+  // Ladda formulärdata när sidan laddas
+  const savedData = JSON.parse(localStorage.getItem("formData"));
+  if (savedData) {
+    document.getElementById("name").value = savedData.name;
+    document.getElementById("email").value = savedData.email;
+  }
+
+  // ✅ Använd preferenser för mörkt läge när sidan laddas
+  if (getDarkMode()) {
+    document.body.classList.add("dark-mode");
+  }
+});
+
+// Spara formulärdata
+document.getElementById("userForm").addEventListener("input", function () {
+  const formData = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+  };
+  localStorage.setItem("formData", JSON.stringify(formData));
+});
+
+// Mörkt läge funktioner
+function setDarkMode(isDark) {
+  localStorage.setItem("darkMode", JSON.stringify(isDark));
+}
+
+function getDarkMode() {
+  return JSON.parse(localStorage.getItem("darkMode")) || false; // Standardvärde är false om inget finns
+}
+
+// Funktion för att växla mörkt läge
+document.getElementById("darkModeToggle").addEventListener("click", () => {
+  const currentMode = getDarkMode();
+  const newMode = !currentMode;
+  setDarkMode(newMode);
+  if (newMode) {
+    document.body.classList.add("dark-mode");
+  } else {
+    document.body.classList.remove("dark-mode");
+  }
 });
 
 // let user1 = new User("Alice", "alice@example.com");
