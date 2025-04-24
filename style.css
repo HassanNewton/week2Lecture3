@@ -8,6 +8,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  width: 100vw;
   color: #0b2545; /* Primär textfärg */
   transition: background-color 0.3s, color 0.3s; /* Smidig övergång för mörkt läge */
 }
@@ -24,7 +25,6 @@ button.dark-mode {
 h2 {
   font-size: 24px;
   color: #134074; /* Mörkblå färg för rubriker */
-  margin-bottom: 20px;
 }
 
 /* Formulär och inputs */
@@ -38,7 +38,6 @@ form {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 300px;
   margin-bottom: 20px;
-  margin-top: 10%;
 }
 
 input {
