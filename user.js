@@ -115,6 +115,17 @@ class User {
   //     }
   //   }
 
+  // 🟡 Kontrollera om en användare redan finns (baserat på namn och e-post)
+  static async userExists(name, email) {
+    try {
+      const users = await User.getAllUsers();
+      return users.some((user) => user.name === name && user.email === email);
+    } catch (error) {
+      console.error("Error checking if user exists:", error);
+      return false;
+    }
+  }
+
   displayInfo() {
     return `Namn: ${this.name}, E-post: ${this.email}`;
   }
@@ -122,10 +133,10 @@ class User {
 
 export default User;
 
-// let user1 = new User("Alice", "alice@example.com");
-// let user2 = new User("Bob", "bob@example.com");
+let user1 = new User("Alice", "alice@example.com");
+let user2 = new User("Bob", "bob@example.com");
 // user2.displayInfo(); // Namn: Bob, E-post: bob@example.com
-
+// user2.save();
 // // console.log(user1);
 // // user2.save(); // Lägger till en ny användare
 // User.getAllUsers();

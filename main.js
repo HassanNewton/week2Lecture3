@@ -1,8 +1,22 @@
 // main.js
 import User from "./user.js"; // Importera User-klassen
 
+async function createUser(name, email) {
+  const exists = await User.userExists(name, email);
+  if (exists) {
+    alert("Användaren finns redan!");
+    return; // Avbryt skapandet om användaren finns
+  }
+
+  const user = new User(name, email);
+  await user.save();
+  addUserToList(user);
+}
+
 // 🔁 Hjälpfunktion: Lägg till användare i HTML-listan
 function addUserToList(user) {
+  const userList = document.getElementById("userList");
+
   const li = document.createElement("li");
   li.textContent = user.displayInfo();
 
@@ -27,8 +41,8 @@ function addUserToList(user) {
       User.updateUser(user.id, { name: newName, email: newEmail }).then(() => {
         user.name = newName;
         user.email = newEmail;
-        li.textContent = user.displayInfo(); // uppdatera texten
-        li.appendChild(editBtn); // lägg till knappar igen
+        li.textContent = user.displayInfo();
+        li.appendChild(editBtn);
         li.appendChild(deleteBtn);
       });
     }
@@ -36,7 +50,7 @@ function addUserToList(user) {
 
   li.appendChild(editBtn);
   li.appendChild(deleteBtn);
-  document.getElementById("userList").appendChild(li);
+  userList.appendChild(li);
 }
 
 // 🧾 Formulär-hantering
@@ -56,11 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!name || !email) return;
 
-    const newUser = new User(name, email);
-    newUser.save().then(() => {
-      addUserToList(newUser); // Lägg till nya användaren i listan
-      form.reset(); // Rensa formuläret
-    });
+    createUser(name, email);
   });
 
   // Hantera rensa-knappen
